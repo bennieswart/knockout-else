@@ -1,5 +1,5 @@
 /*!
-  Knockout Else v1.0.12 (2015-12-06T16:17:55.106Z)
+  Knockout Else v1.0.12-custom (2026-04-16T16:31:02.614Z)
   By: Brian M Hunt (C) 2014-15
   License: MIT
 */
@@ -148,6 +148,15 @@ function getLastChild(node) {
     do {
         lastChild = nextChild;
     } while (nextChild = ve.nextSibling(nextChild));
+
+    // If the last child is a virtual element, return the end comment.
+    if (lastChild.nodeType === 8) {
+        var childNodes = ve.childNodes(lastChild);
+        if (childNodes) {
+            var beforeEnd = childNodes.length > 0 ? childNodes[childNodes.length - 1] : lastChild;
+            lastChild = beforeEnd.nextSibling;
+        }
+    }
 
     return lastChild;
 }
