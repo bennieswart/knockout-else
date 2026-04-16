@@ -135,6 +135,15 @@ function getLastChild(node) {
         lastChild = nextChild;
     } while (nextChild = ve.nextSibling(nextChild));
 
+    // If the last child is a virtual element, return the end comment.
+    if (lastChild.nodeType === 8) {
+        var childNodes = ve.childNodes(lastChild);
+        if (childNodes) {
+            var beforeEnd = childNodes.length > 0 ? childNodes[childNodes.length - 1] : lastChild;
+            lastChild = beforeEnd.nextSibling;
+        }
+    }
+
     return lastChild;
 }
 
